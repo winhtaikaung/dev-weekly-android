@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+
+            android:title="@string/android_weekly" />
+        <item
+            android:id="@+id/nav_gallery"
+
+            android:title="@string/js_weekly" />
+        <item
+            android:id="@+id/nav_slideshow"
+
+            android:title="@string/react_weekly" />
+        <item
+            android:id="@+id/nav_manage"
+
+            android:title="@string/ruby_weekly" />
+    </group>
+</menu>
