@@ -1,4 +1,4 @@
-package com.winhtaikaung.mmmobilelegendguide
+package com.winhtaikaung.devweekly
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

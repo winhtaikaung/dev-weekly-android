@@ -1,4 +1,4 @@
-package com.winhtaikaung.mmmobilelegendguide.view
+package com.winhtaikaung.devweekly.view
 
 import android.support.v4.app.Fragment
 import io.reactivex.disposables.CompositeDisposable
