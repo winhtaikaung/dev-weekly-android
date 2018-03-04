@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">MM Mobile Legend Guide</string>
-
+    <string name="app_name">Dev Weekly</string>
     <string name="android_weekly">Android Weekly</string>
     <string name="js_weekly">Javascript Weekly</string>
     <string name="react_weekly">React js Weekly</string>

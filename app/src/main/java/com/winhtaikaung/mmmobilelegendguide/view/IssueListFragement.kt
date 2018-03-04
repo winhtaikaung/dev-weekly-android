@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.winhtaikaung.mmmobilelegendguide.R
 
-open class ItemsFragement : MvvmFragment() {
+open class IssueListFragement : MvvmFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_issue_list, container, false)
         return view
     }
 }
