@@ -1,11 +1,28 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MyToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- Title text -->
+        <!--<item name="android:textColorPrimary">@color/textColor</item>-->
+
+        <!-- Title color in AppCompat.Light  -->
+        <!--<item name="android:textColorPrimaryInverse">@color/textColor</item>-->
+
+        <!-- Menu text-->
+        <!--<item name="actionMenuTextColor">@color/textColor</item>-->
+        <!-- Overflow -->
+        <!--<item name="android:textColorSecondary">@color/textColor</item>-->
+        <!-- This will change drawer icon -->
+
+        <!-- background of the  -->
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
 </resources>

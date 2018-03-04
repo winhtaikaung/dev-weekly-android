@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_android_weekly"
+
+            android:title="@string/android_weekly" />
+        <item
+            android:id="@+id/menu_javascript_weekly"
+
+            android:title="@string/js_weekly" />
+        <item
+            android:id="@+id/menu_react_weekly"
+
+            android:title="@string/react_weekly" />
+        <item
+            android:id="@+id/menu_ruby_weekly"
+
+            android:title="@string/ruby_weekly" />
+    </group>
+</menu>
