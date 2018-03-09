@@ -1,4 +1,4 @@
-package com.winhtaikaung.mmmobilelegendguide
+package com.winhtaikaung.devweekly
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.FrameLayout
-import com.winhtaikaung.mmmobilelegendguide.view.IssueListFragement
+import com.winhtaikaung.devweekly.view.IssueListFragement
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {

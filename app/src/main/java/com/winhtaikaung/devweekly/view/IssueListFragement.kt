@@ -1,10 +1,10 @@
-package com.winhtaikaung.mmmobilelegendguide.view
+package com.winhtaikaung.devweekly.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.winhtaikaung.mmmobilelegendguide.R
+import com.winhtaikaung.devweekly.R
 
 open class IssueListFragement : MvvmFragment() {
 

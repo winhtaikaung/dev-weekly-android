@@ -1,4 +1,4 @@
-package com.winhtaikaung.mmmobilelegendguide
+package com.winhtaikaung.devweekly
 
 import org.junit.Test
 
