@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var mContainer: FrameLayout? = null
     private var mToolbar: Toolbar? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,8 +34,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         actionbar?.setDisplayHomeAsUpEnabled(true)
         actionbar?.setHomeAsUpIndicator(R.drawable.ic_menu)
 
-
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
@@ -50,8 +51,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val manager = supportFragmentManager
         val transaction = manager?.beginTransaction()
 
-        when(item?.itemId){
-            R.id.menu_android_weekly,R.id.menu_javascript_weekly,R.id.menu_react_weekly,R.id.menu_ruby_weekly ->{
+        when (item?.itemId) {
+            R.id.menu_android_weekly, R.id.menu_javascript_weekly, R.id.menu_react_weekly, R.id.menu_ruby_weekly -> {
                 mToolbar?.title = item?.title
                 transaction?.replace(R.id.content_frame, IssueListFragement()) // newInstance() is a static factory method.
                 transaction?.commit()

@@ -26,6 +26,8 @@ data class Article(
         val objectId: String,
         val url: String,
         val img: String,
+        val mainUrl: String,
+        val title: String,
         val preContent: String,
         val sourceId: String,
         val issueId: String,
@@ -46,7 +48,9 @@ data class Issue(
 data class Source(
         val id: String,
         val objectId: String,
+        val tag: String,
         val img: String,
+        val name: String,
         val baseUrl: String,
         val createdDate: String,
         val updatedDate: String

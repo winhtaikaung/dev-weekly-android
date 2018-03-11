@@ -5,22 +5,23 @@ import com.winhtaikaung.devweekly.repository.data.IssueResponse
 import com.winhtaikaung.devweekly.repository.data.SourceResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface SourceApi {
-    @GET("Graphql Here")
-    fun getSource(): Observable<SourceResponse>
+    @GET("api")
+    fun getSource(@Query("query") graphqlQuery: String): Observable<SourceResponse>
 }
 
 interface IssueApi {
 
-    @GET("")
-    fun getIssue(): Observable<IssueResponse>
+    @GET("api")
+    fun getIssue(@Query("query") graphqlQuery: String): Observable<IssueResponse>
 
 }
 
 interface ArticleApi {
 
-    @GET("")
-    fun getArticle(): Observable<ArticleResponse>
+    @GET("api")
+    fun getArticle(@Query("query") graphqlQuery: String): Observable<ArticleResponse>
 
 }
