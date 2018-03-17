@@ -26,7 +26,6 @@ class App : Application() {
     }
 
     private var disposable: Disposable? = null
-    private var sourceApi: SourceApi? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -39,14 +38,15 @@ class App : Application() {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(" https://92694f5c.ap.ngrok.io/")
+                .baseUrl("http://192.168.0.107/")
                 .build()
 
         sourceApi = retrofit.create(SourceApi::class.java)
         issueApi = retrofit.create(IssueApi::class.java)
         articleApi = retrofit.create(ArticleApi::class.java)
-        val sourceId = "f80e8357ee7e4b9093762d3b8e75497e"
-        getSource(sourceId)
+        getIssues(2, 1)
+        getArticles(2, 1)
+        getSources(1, 1)
 
 
     }
@@ -65,7 +65,7 @@ class App : Application() {
                 "    updatedDate\n" +
                 "  }\n" +
                 "}"
-        disposable = sourceApi?.getSource(graphql)
+        disposable = sourceApi.getSource(graphql)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe({ result ->
@@ -75,7 +75,7 @@ class App : Application() {
     }
 
     private fun getIssue(issueId: String) {
-        var graphql = "{\n" +
+        val graphql = "{\n" +
                 "  issue(issueId:\"" + issueId + "\"){\n" +
                 "    id\n" +
                 "    objectId\n" +
@@ -86,7 +86,7 @@ class App : Application() {
                 "    updatedDate\n" +
                 "  }\n" +
                 "}"
-        disposable = issueApi?.getIssue(graphql)
+        disposable = issueApi.getIssue(graphql)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe({ result ->
@@ -96,7 +96,7 @@ class App : Application() {
     }
 
     private fun getArticle(articleId: String) {
-        var graphql = "{\n" +
+        val graphql = "{\n" +
                 "  article(articleId:\"" + articleId + "\"){\n" +
                 "    id\n" +
                 "    objectId\n" +
@@ -111,7 +111,102 @@ class App : Application() {
                 "    updatedDate\n" +
                 "  }\n" +
                 "}"
-        disposable = articleApi?.getArticle(graphql)
+        disposable = articleApi.getArticle(graphql)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({ result ->
+                    Log.e("result",
+                            result.toString())
+                }, { error -> error.message })
+    }
+
+    private fun getIssues(limit: Int, page: Int) {
+        val graphql = "{\n" +
+                "  issues(limit: " + limit + ", page: " + page + ") {\n" +
+                "    meta {\n" +
+                "      totalPages\n" +
+                "      current\n" +
+                "      prevPage\n" +
+                "      nextPage\n" +
+                "    }\n" +
+                "    data {\n" +
+                "      id\n" +
+                "      objectId\n" +
+                "      url\n" +
+                "      issueNumber\n" +
+                "      sourceId\n" +
+                "      createdDate\n" +
+                "      updatedDate\n" +
+                "    }\n" +
+                "  }\n" +
+                "}\n"
+
+        disposable = issueApi.getIssueList(graphql)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({ result ->
+                    Log.e("result",
+                            result.toString())
+                }, { error -> error.message })
+    }
+
+    private fun getArticles(limit: Int, page: Int) {
+        val graphql = "{\n" +
+                "  articles(limit: " + limit + ", page: " + page + ") {\n" +
+                "    meta {\n" +
+                "      totalPages\n" +
+                "      current\n" +
+                "      prevPage\n" +
+                "      nextPage\n" +
+                "    }\n" +
+                "    data {\n" +
+                "      id\n" +
+                "      objectId\n" +
+                "      url\n" +
+                "      img\n" +
+                "      mainUrl\n" +
+                "      title\n" +
+                "      preContent\n" +
+                "      issueId\n" +
+                "      sourceId\n" +
+                "      createdDate\n" +
+                "      updatedDate\n" +
+                "    }\n" +
+                "  }\n" +
+                "}\n"
+
+        disposable = articleApi.getArticleList(graphql)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({ result ->
+                    Log.e("result",
+                            result.toString())
+                }, { error -> error.message })
+    }
+
+    private fun getSources(limit: Int, page: Int) {
+        val graphql = "{\n" +
+                "  sources(limit: " + limit + ", page: " + page + ") {\n" +
+                "    meta {\n" +
+                "      totalPages\n" +
+                "      current\n" +
+                "      prevPage\n" +
+                "      nextPage\n" +
+                "    }\n" +
+                "    data {\n" +
+                "      id\n" +
+                "      objectId\n" +
+                "      tag\n" +
+                "      img\n" +
+                "      name\n" +
+                "      baseUrl\n" +
+                "      createdDate\n" +
+                "      updatedDate\n" +
+                "    }\n" +
+                "  }\n" +
+                "}\n"
+
+        disposable = sourceApi.getSourceList(graphql)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe({ result ->
