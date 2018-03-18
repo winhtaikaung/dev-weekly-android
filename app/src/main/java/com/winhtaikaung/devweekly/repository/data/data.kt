@@ -26,37 +26,37 @@ data class ArticleListResponse(
 )
 
 data class Sources(
-        val meta: Meta,
-        val data: List<Source>
+        val meta: Meta?,
+        val data: List<Source>?
 )
 
 
 data class Articles(
-        val meta: Meta,
-        val data: List<Article>
+        val meta: Meta?,
+        val data: List<Article>?
 )
 
 
 data class Issues(
-        val meta: Meta,
-        val data: List<Issue>
+        val meta: Meta?,
+        val data: List<Issue>?
 )
 
 data class Data(
-        val source: Source,
-        val issue: Issue,
-        val article: Article,
-        val issues: Issues,
-        val articles: Articles,
-        val sources: Sources
+        val source: Source?,
+        val issue: Issue?,
+        val article: Article?,
+        val issues: Issues?,
+        val articles: Articles?,
+        val sources: Sources?
 )
 
 
 data class Meta(
-        val totalPages: Int,
-        val current: Int,
-        val prevPage: Int,
-        val nextPage: Int
+        val totalPages: Int?,
+        val current: Int?,
+        val prevPage: Int?,
+        val nextPage: Int?
 )
 
 /****************
