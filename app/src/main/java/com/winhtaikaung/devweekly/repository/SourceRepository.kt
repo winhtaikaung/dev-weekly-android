@@ -1,18 +1,16 @@
 package com.winhtaikaung.devweekly.repository
 
-import android.util.Log
 import com.winhtaikaung.devweekly.repository.api.SourceApi
-import com.winhtaikaung.devweekly.repository.data.SourceListResponse
-import com.winhtaikaung.devweekly.repository.data.SourceResponse
+import com.winhtaikaung.devweekly.repository.data.Source
 import io.reactivex.Observable
 
 class SourceRepository(val sourceApi: SourceApi) {
 
-    fun getSourceList(limit:Int,page:Int):Observable<SourceListResponse>{
-        return Observable.concatArray(getSourceListFromApi(limit,page))
+    fun getSourceList(limit: Int, page: Int): Observable<List<Source>> {
+        return Observable.concatArray(getSourceListFromApi(limit, page))
     }
 
-    fun getSourceListFromApi(limit: Int, page: Int): Observable<SourceListResponse> {
+    fun getSourceListFromApi(limit: Int, page: Int): Observable<List<Source>> {
         val graphql = "{\n" +
                 "  sources(limit: " + limit + ", page: " + page + ") {\n" +
                 "    meta {\n" +
@@ -33,12 +31,10 @@ class SourceRepository(val sourceApi: SourceApi) {
                 "    }\n" +
                 "  }\n" +
                 "}\n"
-        return sourceApi.getSourceList(graphql).doOnNext {
-            //TODO store source data in DB here
-        }
+        return sourceApi.getSourceList(graphql).flatMap { (data) -> Observable.just(data.sources!!.data!!) }
     }
 
-    fun getSourceFromApi(sourceId: String): Observable<SourceResponse> {
+    fun getSourceFromApi(sourceId: String): Observable<Source> {
         val graphql = "{\n" +
                 "  source(sourceId: \"" + sourceId + "\") {\n" +
                 "    id\n" +
@@ -51,9 +47,7 @@ class SourceRepository(val sourceApi: SourceApi) {
                 "    updatedDate\n" +
                 "  }\n" +
                 "}"
-        return sourceApi.getSource(graphql).doOnNext {
-            Log.e("SourceAPI", "Fetching ${it.data.source.toString()} from Api......")
-            // TODO StoreSource in here
-        }
+
+        return sourceApi.getSource(graphql).flatMap { (data) -> Observable.just(data.source!!) }
     }
 }

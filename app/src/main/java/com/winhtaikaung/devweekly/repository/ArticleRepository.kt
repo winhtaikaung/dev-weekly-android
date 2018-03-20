@@ -1,13 +1,11 @@
 package com.winhtaikaung.devweekly.repository
 
-import android.util.Log
 import com.winhtaikaung.devweekly.repository.api.ArticleApi
-import com.winhtaikaung.devweekly.repository.data.ArticleListResponse
-import com.winhtaikaung.devweekly.repository.data.ArticleResponse
+import com.winhtaikaung.devweekly.repository.data.Article
 import io.reactivex.Observable
 
 class ArticleRepository(val articleApi: ArticleApi) {
-    fun getArticleListFromApi(limit: Int, page: Int): Observable<ArticleListResponse> {
+    fun getArticleListFromApi(limit: Int, page: Int): Observable<List<Article>> {
         val graphql = "{\n" +
                 "  articles(limit: " + limit + ", page: " + page + ") {\n" +
                 "    meta {\n" +
@@ -31,12 +29,10 @@ class ArticleRepository(val articleApi: ArticleApi) {
                 "    }\n" +
                 "  }\n" +
                 "}\n"
-        return articleApi.getArticleList(graphql).doOnNext {
-            Log.e("ArticleAPI", "Fetching ${it.data.articles?.data?.size} articles from API ... ... ... .......")
-        }
+        return articleApi.getArticleList(graphql).flatMap { (data) -> Observable.just(data.articles!!.data!!) }
     }
 
-    fun getArticleFromApi(articleId: String): Observable<ArticleResponse> {
+    fun getArticleFromApi(articleId: String): Observable<Article> {
         val graphql = "{\n" +
                 "  article(articleId:\"" + articleId + "\"){\n" +
                 "    id\n" +
@@ -52,9 +48,6 @@ class ArticleRepository(val articleApi: ArticleApi) {
                 "    updatedDate\n" +
                 "  }\n" +
                 "}"
-
-        return articleApi.getArticle(graphql).doOnNext {
-            Log.e("ArticleAPI", "Fetching ${it.data.article} from API ...... ..........")
-        }
+        return articleApi.getArticle(graphql).flatMap { (data) -> Observable.just(data.article!!) }
     }
 }
