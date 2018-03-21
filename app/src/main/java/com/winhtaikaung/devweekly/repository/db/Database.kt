@@ -8,5 +8,7 @@ import com.winhtaikaung.devweekly.repository.data.Source
 
 @Database(entities = arrayOf(Source::class, Issue::class, Article::class), version = 1)
 abstract class AppDatabase : RoomDatabase() {
-//    abstract fun userDao(): UserDao
+    abstract fun sourceDao(): SourceDao
+    abstract fun issueDao(): IssueDao
+    abstract fun articleDao(): ArticleDao
 }
