@@ -78,7 +78,7 @@ class IssueRepository(val issueApi: IssueApi, val issueDao: IssueDao) {
         return issueDao.getIssue(issueId)
                 .toObservable()
                 .doOnNext {
-                    Log.e("DAO", "Dispatching ${it.toString()} issues from DB...")
+//                    Log.e("DAO", "Dispatching ${it.toString()} issues from DB...")
 
                 }
     }
@@ -88,7 +88,7 @@ class IssueRepository(val issueApi: IssueApi, val issueDao: IssueDao) {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    Log.e("DAO", "Saving ${issue.toString()} into DB")
+//                    Log.e("DAO", "Saving ${issue.toString()} into DB")
                 }
     }
 
@@ -97,7 +97,7 @@ class IssueRepository(val issueApi: IssueApi, val issueDao: IssueDao) {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    Log.e("DAO", "Saving ${issues.size} issues into DB...")
+//                    Log.e("DAO", "Saving ${issues.size} issues into DB...")
                 }
     }
 }

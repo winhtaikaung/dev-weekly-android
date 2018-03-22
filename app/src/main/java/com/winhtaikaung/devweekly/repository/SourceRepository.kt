@@ -1,6 +1,5 @@
 package com.winhtaikaung.devweekly.repository
 
-import android.util.Log
 import com.winhtaikaung.devweekly.repository.api.SourceApi
 import com.winhtaikaung.devweekly.repository.data.Source
 import com.winhtaikaung.devweekly.repository.db.SourceDao
@@ -46,7 +45,7 @@ class SourceRepository(val sourceApi: SourceApi, val sourceDao: SourceDao) {
         return sourceDao.getSources(limit, page).filter { it.isNotEmpty() }
                 .toObservable()
                 .doOnNext {
-                    Log.e("DAO", "Dispatching ${it.size} sources from DB...")
+//                    Log.e("DAO", "Dispatching ${it.size} sources from DB...")
 
                 }
     }
@@ -81,7 +80,7 @@ class SourceRepository(val sourceApi: SourceApi, val sourceDao: SourceDao) {
         return sourceDao.getSource(sourceId)
                 .toObservable()
                 .doOnNext {
-                    Log.e("DAO", "Dispatching ${it.toString()} source from DB...")
+//                    Log.e("DAO", "Dispatching ${it.toString()} source from DB...")
 
                 }
     }
@@ -91,7 +90,7 @@ class SourceRepository(val sourceApi: SourceApi, val sourceDao: SourceDao) {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    Log.e("DAO", "Saving ${source.toString()} into DB")
+//                    Log.e("DAO", "Saving ${source.toString()} into DB")
                 }
     }
 
@@ -100,7 +99,7 @@ class SourceRepository(val sourceApi: SourceApi, val sourceDao: SourceDao) {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    Log.e("DAO", "Saving ${sources.size} source into DB...")
+//                    Log.e("DAO", "Saving ${sources.size} source into DB...")
                 }
     }
 }

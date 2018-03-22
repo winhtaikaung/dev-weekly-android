@@ -87,7 +87,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
         return articleDao.getArticle(articleId)
                 .toObservable()
                 .doOnNext {
-                    Log.e("DAO", "Dispatching ${it.toString()} article from DB")
+//                    Log.e("DAO", "Dispatching ${it.toString()} article from DB")
                 }
     }
 
@@ -96,7 +96,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    Log.e("DAO", "Saving ${article.toString()} into DB")
+//                    Log.e("DAO", "Saving ${article.toString()} into DB")
                 }
     }
 
@@ -105,7 +105,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    Log.e("DAO", "Saving ${articles.size} articles into DB...")
+//                    Log.e("DAO", "Saving ${articles.size} articles into DB...")
                 }
     }
 }
