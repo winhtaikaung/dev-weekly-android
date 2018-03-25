@@ -1,10 +1,14 @@
 package com.winhtaikaung.devweekly
 
 import android.app.Application
+import android.arch.persistence.room.Room
 import android.util.Log
+import com.winhtaikaung.devweekly.repository.IssueRepository
 import com.winhtaikaung.devweekly.repository.api.ArticleApi
 import com.winhtaikaung.devweekly.repository.api.IssueApi
 import com.winhtaikaung.devweekly.repository.api.SourceApi
+import com.winhtaikaung.devweekly.repository.db.AppDatabase
+import com.winhtaikaung.devweekly.viewmodel.IssueListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -21,7 +25,15 @@ class App : Application() {
         private lateinit var sourceApi: SourceApi
         private lateinit var issueApi: IssueApi
         private lateinit var articleApi: ArticleApi
+        private lateinit var issueListViewModel: IssueListViewModel
+        private lateinit var appDatabase: AppDatabase
+        private lateinit var issueRepository: IssueRepository
 
+        fun injectIssueApi() = issueApi
+
+        fun injectIssueListViewModel() = issueListViewModel
+
+        fun injectIssueDao() = appDatabase.issueDao()
 
     }
 
@@ -38,16 +50,17 @@ class App : Application() {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://192.168.0.107/")
+                .baseUrl("http://192.168.0.108/")
                 .build()
 
         sourceApi = retrofit.create(SourceApi::class.java)
         issueApi = retrofit.create(IssueApi::class.java)
         articleApi = retrofit.create(ArticleApi::class.java)
-        getIssues(2, 1)
-        getArticles(2, 1)
-        getSources(1, 1)
 
+        appDatabase = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "dev-weekly-database").build()
+
+        issueRepository = IssueRepository(issueApi, appDatabase.issueDao())
+        issueListViewModel = IssueListViewModel(issueRepository)
 
     }
 

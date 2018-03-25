@@ -1,10 +1,10 @@
 package com.winhtaikaung.devweekly.view
 
-import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-open class MvvmFragment : Fragment() {
+open class MvvmActivity : AppCompatActivity() {
     val subscriptions = CompositeDisposable()
 
     fun subscribe(disposable: Disposable): Disposable {
@@ -16,5 +16,4 @@ open class MvvmFragment : Fragment() {
         super.onStop()
         subscriptions.clear()
     }
-
 }

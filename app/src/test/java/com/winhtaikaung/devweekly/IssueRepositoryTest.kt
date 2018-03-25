@@ -18,7 +18,7 @@ class IssueRepositoryTest {
     lateinit var issueRepository: IssueRepository
     lateinit var issueApi: IssueApi
     lateinit var issueDao: IssueDao
-    var issueListGraphql =  "{\n" +
+    var issueListGraphql = "{\n" +
             "  issues(limit: " + 1 + ", page: " + 1 + ",sourceId:" + "61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF" + ") \n" +
             "      meta {\n" +
             "      totalPages\n" +
@@ -53,8 +53,8 @@ class IssueRepositoryTest {
     fun test_emptyCache_OnIssueListApi_resutEmptyList() {
         `when`(issueApi.getIssueList(issueListGraphql)).thenReturn(Observable.just(IssueListResponse(
                 data = Data(source = null, sources = null, article = null,
-                        articles =null,
-                        issue = null, issues =  Issues(meta = null, data = emptyList<Issue>()))
+                        articles = null,
+                        issue = null, issues = Issues(meta = null, data = emptyList<Issue>()))
         )))
         issueRepository.getIssueList(1, 1, "61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF").test()
                 .assertValue { it.isEmpty() }

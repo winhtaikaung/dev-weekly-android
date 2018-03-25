@@ -12,8 +12,8 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
 
     fun getArticleList(limit: Int, page: Int, issueId: String): Observable<List<Article>> {
         return Observable.concatArray(
-                getArticleListFromDB(limit, page, issueId),
-                getArticleListFromApi(limit, page, issueId))
+                getArticleListFromApi(limit, page, issueId),
+                getArticleListFromDB(limit, page, issueId))
     }
 
     fun getArticleListFromApi(limit: Int, page: Int, issueId: String): Observable<List<Article>> {
@@ -44,7 +44,9 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
             storesArticleListinDB(data.articles!!.data!!)
             Observable.just(data.articles!!.data!!)
 
-        }
+        }.onErrorReturn {
+                    emptyList()
+                }
     }
 
     fun getArticleListFromDB(limit: Int, page: Int, issueId: String): Observable<List<Article>> {
@@ -87,7 +89,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
         return articleDao.getArticle(articleId)
                 .toObservable()
                 .doOnNext {
-//                    Log.e("DAO", "Dispatching ${it.toString()} article from DB")
+                    //                    Log.e("DAO", "Dispatching ${it.toString()} article from DB")
                 }
     }
 
@@ -96,7 +98,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-//                    Log.e("DAO", "Saving ${article.toString()} into DB")
+                    //                    Log.e("DAO", "Saving ${article.toString()} into DB")
                 }
     }
 
@@ -105,7 +107,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-//                    Log.e("DAO", "Saving ${articles.size} articles into DB...")
+                    //                    Log.e("DAO", "Saving ${articles.size} articles into DB...")
                 }
     }
 }

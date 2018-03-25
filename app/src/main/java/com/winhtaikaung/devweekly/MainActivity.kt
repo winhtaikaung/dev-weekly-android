@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.FrameLayout
 import com.winhtaikaung.devweekly.view.IssueListFragement
+import com.winhtaikaung.devweekly.view.MvvmActivity
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
     private var mDrawerLayout: DrawerLayout? = null

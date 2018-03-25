@@ -38,14 +38,16 @@ class SourceRepository(val sourceApi: SourceApi, val sourceDao: SourceDao) {
         return sourceApi.getSourceList(graphql).flatMap { (data) ->
             storesSourcesListinDB(data.sources!!.data!!)
             Observable.just(data.sources!!.data!!)
-        }
+        }.onErrorReturn {
+                    emptyList()
+                }
     }
 
     fun getSourceListFromDB(limit: Int, page: Int): Observable<List<Source>> {
         return sourceDao.getSources(limit, page).filter { it.isNotEmpty() }
                 .toObservable()
                 .doOnNext {
-//                    Log.e("DAO", "Dispatching ${it.size} sources from DB...")
+                    //                    Log.e("DAO", "Dispatching ${it.size} sources from DB...")
 
                 }
     }
@@ -80,7 +82,7 @@ class SourceRepository(val sourceApi: SourceApi, val sourceDao: SourceDao) {
         return sourceDao.getSource(sourceId)
                 .toObservable()
                 .doOnNext {
-//                    Log.e("DAO", "Dispatching ${it.toString()} source from DB...")
+                    //                    Log.e("DAO", "Dispatching ${it.toString()} source from DB...")
 
                 }
     }
@@ -90,7 +92,7 @@ class SourceRepository(val sourceApi: SourceApi, val sourceDao: SourceDao) {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-//                    Log.e("DAO", "Saving ${source.toString()} into DB")
+                    //                    Log.e("DAO", "Saving ${source.toString()} into DB")
                 }
     }
 
@@ -99,7 +101,7 @@ class SourceRepository(val sourceApi: SourceApi, val sourceDao: SourceDao) {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-//                    Log.e("DAO", "Saving ${sources.size} source into DB...")
+                    //                    Log.e("DAO", "Saving ${sources.size} source into DB...")
                 }
     }
 }
