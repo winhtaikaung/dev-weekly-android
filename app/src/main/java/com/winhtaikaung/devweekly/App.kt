@@ -2,16 +2,15 @@ package com.winhtaikaung.devweekly
 
 import android.app.Application
 import android.arch.persistence.room.Room
-import android.util.Log
 import com.winhtaikaung.devweekly.repository.IssueRepository
+import com.winhtaikaung.devweekly.repository.SourceRepository
 import com.winhtaikaung.devweekly.repository.api.ArticleApi
 import com.winhtaikaung.devweekly.repository.api.IssueApi
 import com.winhtaikaung.devweekly.repository.api.SourceApi
 import com.winhtaikaung.devweekly.repository.db.AppDatabase
 import com.winhtaikaung.devweekly.viewmodel.IssueListViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.winhtaikaung.devweekly.viewmodel.SourceListViewModel
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -26,15 +25,19 @@ class App : Application() {
         private lateinit var issueApi: IssueApi
         private lateinit var articleApi: ArticleApi
         private lateinit var issueListViewModel: IssueListViewModel
+        private lateinit var sourceListviewModel: SourceListViewModel
         private lateinit var appDatabase: AppDatabase
         private lateinit var issueRepository: IssueRepository
+        private lateinit var sourceRepository: SourceRepository
 
         fun injectIssueApi() = issueApi
-
         fun injectIssueListViewModel() = issueListViewModel
-
         fun injectIssueDao() = appDatabase.issueDao()
 
+
+        fun injectSourceApi() = sourceApi
+        fun injectSourceListViewModel() = sourceListviewModel
+        fun injectSourceDao() = appDatabase.sourceDao()
     }
 
     private var disposable: Disposable? = null
@@ -50,7 +53,7 @@ class App : Application() {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://192.168.0.108/")
+                .baseUrl("http://192.168.1.103/")
                 .build()
 
         sourceApi = retrofit.create(SourceApi::class.java)
@@ -62,170 +65,9 @@ class App : Application() {
         issueRepository = IssueRepository(issueApi, appDatabase.issueDao())
         issueListViewModel = IssueListViewModel(issueRepository)
 
-    }
+        sourceRepository = SourceRepository(sourceApi, appDatabase.sourceDao())
+        sourceListviewModel = SourceListViewModel(sourceRepository)
 
-    //TODO the following method will be placed in Repository
-    private fun getSource(sourceId: String) {
-        val graphql = "{\n" +
-                "  source(sourceId: \"" + sourceId + "\") {\n" +
-                "    id\n" +
-                "    objectId\n" +
-                "    tag\n" +
-                "    img\n" +
-                "    name\n" +
-                "    baseUrl\n" +
-                "    createdDate\n" +
-                "    updatedDate\n" +
-                "  }\n" +
-                "}"
-        disposable = sourceApi.getSource(graphql)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ result ->
-                    Log.e("result",
-                            result.toString())
-                }, { error -> error.message })
-    }
-
-    private fun getIssue(issueId: String) {
-        val graphql = "{\n" +
-                "  issue(issueId:\"" + issueId + "\"){\n" +
-                "    id\n" +
-                "    objectId\n" +
-                "    url\n" +
-                "    issueNumber\n" +
-                "    sourceId\n" +
-                "    createdDate\n" +
-                "    updatedDate\n" +
-                "  }\n" +
-                "}"
-        disposable = issueApi.getIssue(graphql)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ result ->
-                    Log.e("result",
-                            result.toString())
-                }, { error -> error.message })
-    }
-
-    private fun getArticle(articleId: String) {
-        val graphql = "{\n" +
-                "  article(articleId:\"" + articleId + "\"){\n" +
-                "    id\n" +
-                "    objectId\n" +
-                "    url\n" +
-                "    img\n" +
-                "    mainUrl\n" +
-                "    title\n" +
-                "    preContent\n" +
-                "    sourceId\n" +
-                "    issueId\n" +
-                "    createdDate\n" +
-                "    updatedDate\n" +
-                "  }\n" +
-                "}"
-        disposable = articleApi.getArticle(graphql)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ result ->
-                    Log.e("result",
-                            result.toString())
-                }, { error -> error.message })
-    }
-
-    private fun getIssues(limit: Int, page: Int) {
-        val graphql = "{\n" +
-                "  issues(limit: " + limit + ", page: " + page + ") {\n" +
-                "    meta {\n" +
-                "      totalPages\n" +
-                "      current\n" +
-                "      prevPage\n" +
-                "      nextPage\n" +
-                "    }\n" +
-                "    data {\n" +
-                "      id\n" +
-                "      objectId\n" +
-                "      url\n" +
-                "      issueNumber\n" +
-                "      sourceId\n" +
-                "      createdDate\n" +
-                "      updatedDate\n" +
-                "    }\n" +
-                "  }\n" +
-                "}\n"
-
-        disposable = issueApi.getIssueList(graphql)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ result ->
-                    Log.e("result",
-                            result.toString())
-                }, { error -> error.message })
-    }
-
-    private fun getArticles(limit: Int, page: Int) {
-        val graphql = "{\n" +
-                "  articles(limit: " + limit + ", page: " + page + ") {\n" +
-                "    meta {\n" +
-                "      totalPages\n" +
-                "      current\n" +
-                "      prevPage\n" +
-                "      nextPage\n" +
-                "    }\n" +
-                "    data {\n" +
-                "      id\n" +
-                "      objectId\n" +
-                "      url\n" +
-                "      img\n" +
-                "      mainUrl\n" +
-                "      title\n" +
-                "      preContent\n" +
-                "      issueId\n" +
-                "      sourceId\n" +
-                "      createdDate\n" +
-                "      updatedDate\n" +
-                "    }\n" +
-                "  }\n" +
-                "}\n"
-
-        disposable = articleApi.getArticleList(graphql)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ result ->
-                    Log.e("result",
-                            result.toString())
-                }, { error -> error.message })
-    }
-
-    private fun getSources(limit: Int, page: Int) {
-        val graphql = "{\n" +
-                "  sources(limit: " + limit + ", page: " + page + ") {\n" +
-                "    meta {\n" +
-                "      totalPages\n" +
-                "      current\n" +
-                "      prevPage\n" +
-                "      nextPage\n" +
-                "    }\n" +
-                "    data {\n" +
-                "      id\n" +
-                "      objectId\n" +
-                "      tag\n" +
-                "      img\n" +
-                "      name\n" +
-                "      baseUrl\n" +
-                "      createdDate\n" +
-                "      updatedDate\n" +
-                "    }\n" +
-                "  }\n" +
-                "}\n"
-
-        disposable = sourceApi.getSourceList(graphql)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ result ->
-                    Log.e("result",
-                            result.toString())
-                }, { error -> error.message })
     }
 
 
