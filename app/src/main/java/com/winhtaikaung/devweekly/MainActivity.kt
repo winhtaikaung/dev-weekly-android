@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.widget.FrameLayout
 import com.winhtaikaung.devweekly.view.IssueListFragement
 import com.winhtaikaung.devweekly.view.MvvmActivity
-import com.winhtaikaung.devweekly.viewmodel.SourceListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -50,18 +49,16 @@ class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedList
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    //                    Timber.d("Received UIModel with ${it.issues.size} users.")
-                    Log.e("Success", "${it.sources.toString()}")
-                    mNavigationView?.menu?.add(0, android.R.drawable.ic_menu_add, Menu.NONE, "a")
+
+                    it.sources.map {
+
+                        mNavigationView?.menu?.add(0,it.objectId.hashCode() , Menu.NONE, it.name)
+                    }
+
 
                 }, {
                     Timber.w(it)
                 }))
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return true
-
     }
 
 
@@ -82,11 +79,13 @@ class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedList
         when (item?.itemId) {
             R.id.menu_android_weekly, R.id.menu_javascript_weekly, R.id.menu_react_weekly, R.id.menu_ruby_weekly -> {
                 mToolbar?.title = item?.title
-                transaction?.replace(R.id.content_frame, IssueListFragement()) // newInstance() is a static factory method.
-                transaction?.commit()
+
             }
 
         }
+        Log.e("Navigation Id", "${item?.itemId}")
+        transaction?.replace(R.id.content_frame, IssueListFragement()) // newInstance() is a static factory method.
+        transaction?.commit()
         item.isChecked = true
         // close drawer when item is tapped
         mDrawerLayout?.closeDrawers()

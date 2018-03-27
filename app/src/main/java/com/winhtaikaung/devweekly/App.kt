@@ -53,7 +53,7 @@ class App : Application() {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://192.168.1.103/")
+                .baseUrl("http://192.168.0.107/")
                 .build()
 
         sourceApi = retrofit.create(SourceApi::class.java)
