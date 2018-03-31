@@ -1,4 +1,4 @@
-package com.winhtaikaung.devweekly.view
+package com.winhtaikaung.devweekly.base
 
 import android.support.v4.app.Fragment
 import io.reactivex.disposables.CompositeDisposable

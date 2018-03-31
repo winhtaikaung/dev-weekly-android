@@ -19,7 +19,7 @@ class IssueRepositoryTest {
     lateinit var issueApi: IssueApi
     lateinit var issueDao: IssueDao
     var issueListGraphql = "{\n" +
-            "  issues(limit: " + 1 + ", page: " + 1 + ",sourceId:" + "61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF" + ") \n" +
+            "  issues(limit: " + 1 + ", page: " + 1 + ",sourceId:\"61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF\"){ \n" +
             "      meta {\n" +
             "      totalPages\n" +
             "      current\n" +
@@ -45,7 +45,6 @@ class IssueRepositoryTest {
         `when`(issueDao.getIssues(1, 1, "61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF"))
                 .thenReturn(Single.just(emptyList()))
         issueRepository = IssueRepository(issueApi, issueDao)
-
 
     }
 

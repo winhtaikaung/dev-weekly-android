@@ -19,7 +19,7 @@ class ArticleRepositoryTest {
     lateinit var articleApi: ArticleApi
     lateinit var articleDao: ArticleDao
     var articleListGraphql = "{\n" +
-            "  articles(limit: " + 1 + ", page: " + 1 + ",issueId:" + "61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF" + ") {\n" +
+            "  articles(limit: " + 1 + ", page: " + 1 + ",issueId:\"61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF\") {\n" +
             "    meta {\n" +
             "      totalPages\n" +
             "      current\n" +

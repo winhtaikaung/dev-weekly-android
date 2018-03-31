@@ -18,7 +18,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
 
     fun getArticleListFromApi(limit: Int, page: Int, issueId: String): Observable<List<Article>> {
         val graphql = "{\n" +
-                "  articles(limit: " + limit + ", page: " + page + ",issueId:" + issueId + ") {\n" +
+                "  articles(limit: " + limit + ", page: " + page + ",issueId:\"" + issueId + "\") {\n" +
                 "    meta {\n" +
                 "      totalPages\n" +
                 "      current\n" +

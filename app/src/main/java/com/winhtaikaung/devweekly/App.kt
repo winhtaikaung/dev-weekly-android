@@ -2,14 +2,16 @@ package com.winhtaikaung.devweekly
 
 import android.app.Application
 import android.arch.persistence.room.Room
+import com.winhtaikaung.devweekly.article.ArticleListViewModel
+import com.winhtaikaung.devweekly.issue.IssueListViewModel
+import com.winhtaikaung.devweekly.repository.ArticleRepository
 import com.winhtaikaung.devweekly.repository.IssueRepository
 import com.winhtaikaung.devweekly.repository.SourceRepository
 import com.winhtaikaung.devweekly.repository.api.ArticleApi
 import com.winhtaikaung.devweekly.repository.api.IssueApi
 import com.winhtaikaung.devweekly.repository.api.SourceApi
 import com.winhtaikaung.devweekly.repository.db.AppDatabase
-import com.winhtaikaung.devweekly.viewmodel.IssueListViewModel
-import com.winhtaikaung.devweekly.viewmodel.SourceListViewModel
+import com.winhtaikaung.devweekly.source.SourceListViewModel
 import io.reactivex.disposables.Disposable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,9 +28,12 @@ class App : Application() {
         private lateinit var articleApi: ArticleApi
         private lateinit var issueListViewModel: IssueListViewModel
         private lateinit var sourceListviewModel: SourceListViewModel
+        private lateinit var articleListviewModel: ArticleListViewModel
+
         private lateinit var appDatabase: AppDatabase
         private lateinit var issueRepository: IssueRepository
         private lateinit var sourceRepository: SourceRepository
+        private lateinit var articleRepository: ArticleRepository
 
 
         fun injectIssueApi() = issueApi
@@ -39,6 +44,11 @@ class App : Application() {
         fun injectSourceApi() = sourceApi
         fun injectSourceListViewModel() = sourceListviewModel
         fun injectSourceDao() = appDatabase.sourceDao()
+
+
+        fun injectArticleApi() = articleApi
+        fun injectArticleListViewModel() = articleListviewModel
+        fun injectArticleDao() = appDatabase.articleDao()
     }
 
     private var disposable: Disposable? = null
@@ -68,6 +78,10 @@ class App : Application() {
 
         sourceRepository = SourceRepository(sourceApi, appDatabase.sourceDao())
         sourceListviewModel = SourceListViewModel(sourceRepository)
+
+        articleRepository = ArticleRepository(articleApi, appDatabase.articleDao())
+        articleListviewModel = ArticleListViewModel(articleRepository)
+
 
     }
 

@@ -1,4 +1,4 @@
-package com.winhtaikaung.devweekly.viewmodel
+package com.winhtaikaung.devweekly.source
 
 import com.winhtaikaung.devweekly.repository.SourceRepository
 import com.winhtaikaung.devweekly.viewmodel.data.SourceList

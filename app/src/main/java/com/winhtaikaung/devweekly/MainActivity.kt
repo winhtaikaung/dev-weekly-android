@@ -5,15 +5,15 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.ImageView
-import com.winhtaikaung.devweekly.view.IssueListFragement
-import com.winhtaikaung.devweekly.view.MvvmActivity
+import com.winhtaikaung.devweekly.base.MvvmActivity
+import com.winhtaikaung.devweekly.issue.IssueListFragement
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.*
 
 
 class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -25,6 +25,7 @@ class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedList
     private var mToolbar: Toolbar? = null
     private var sourceListViewModel = App.injectSourceListViewModel()
     private var tmpImageView: ImageView? = null
+    private var menuList:TreeMap<String,String>? = TreeMap<String,String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,29 +42,25 @@ class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedList
         actionbar?.setDisplayHomeAsUpEnabled(true)
         actionbar?.setHomeAsUpIndicator(R.drawable.ic_menu)
 
-        subscribe(sourceListViewModel.getSources(10, 1)
+        subscribe(sourceListViewModel.getSources(10, 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    var i = 0
                     it.sources.map {
 
-                        mNavigationView?.menu?.add(0, it.objectId.hashCode(), Menu.NONE, it.name)
+                        mNavigationView?.menu?.add(0, i,i , it.name)
+                        menuList!!.put(it.name,it.objectId)
+                        i++
                         //TODO set icon dynamicaly or from assets
                     }
-
-
+                    i = 0
                 }, {
                     Timber.w(it)
                 }))
 
 
     }
-
-    override fun onStart() {
-        super.onStart()
-
-    }
-
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
@@ -78,15 +75,8 @@ class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val manager = supportFragmentManager
         val transaction = manager?.beginTransaction()
-
-        when (item?.itemId) {
-            R.id.menu_android_weekly, R.id.menu_javascript_weekly, R.id.menu_react_weekly, R.id.menu_ruby_weekly -> {
-                mToolbar?.title = item?.title
-
-            }
-
-        }
-        transaction?.replace(R.id.content_frame, IssueListFragement()) // newInstance() is a static factory method.
+        mToolbar?.title = item?.title
+        transaction?.replace(R.id.content_frame, IssueListFragement.newInstance(menuList?.get(item.title).toString())) // newInstance() is a static factory method.
         transaction?.commit()
         item.isChecked = true
         // close drawer when item is tapped

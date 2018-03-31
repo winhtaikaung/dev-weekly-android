@@ -4,4 +4,7 @@
     <string name="js_weekly">Javascript Weekly</string>
     <string name="react_weekly">React js Weekly</string>
     <string name="ruby_weekly">Ruby Weekly</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

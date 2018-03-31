@@ -36,6 +36,7 @@ class IssueRepository(val issueApi: IssueApi, val issueDao: IssueDao) {
                 "  }\n" +
                 "}\n"
 
+
         return issueApi.getIssueList(graphql).flatMap { (data) ->
             storesIssueListinDB(data.issues!!.data!!)
             Observable.just(data.issues!!.data!!)
