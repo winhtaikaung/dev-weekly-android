@@ -30,6 +30,7 @@ class App : Application() {
         private lateinit var issueRepository: IssueRepository
         private lateinit var sourceRepository: SourceRepository
 
+
         fun injectIssueApi() = issueApi
         fun injectIssueListViewModel() = issueListViewModel
         fun injectIssueDao() = appDatabase.issueDao()
@@ -53,7 +54,7 @@ class App : Application() {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://192.168.0.107/")
+                .baseUrl("http://192.168.0.108/")
                 .build()
 
         sourceApi = retrofit.create(SourceApi::class.java)
