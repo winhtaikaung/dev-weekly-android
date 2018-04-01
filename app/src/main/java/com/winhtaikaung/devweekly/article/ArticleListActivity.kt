@@ -1,9 +1,9 @@
 package com.winhtaikaung.devweekly.article
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.winhtaikaung.devweekly.base.MvvmActivity
 
-class ArticleListActivity : AppCompatActivity() {
+class ArticleListActivity : MvvmActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

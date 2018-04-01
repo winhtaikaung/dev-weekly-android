@@ -54,10 +54,10 @@ class SourceRoomTest {
                     Date().toGMTString(), Date().toGMTString())
             mSourceDao!!.insertSource(user)
         }
-        val sourceList = mSourceDao!!.getSources(4, 0)
+        val result = mSourceDao!!.getSources(4, 0)
 
-        val byname = sourceList.blockingGet()
+        val sourceList = result.blockingGet()
 
-        assertThat(byname.size, equalTo(4))
+        assertThat(sourceList.size, equalTo(4))
     }
 }
