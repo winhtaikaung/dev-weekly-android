@@ -33,6 +33,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
                 "      mainUrl\n" +
                 "      title\n" +
                 "      preContent\n" +
+                "      articleViewContent\n" +
                 "      issueId\n" +
                 "      sourceId\n" +
                 "      createdDate\n" +
@@ -73,6 +74,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
                 "    mainUrl\n" +
                 "    title\n" +
                 "    preContent\n" +
+                "    articleViewContent\n" +
                 "    sourceId\n" +
                 "    issueId\n" +
                 "    createdDate\n" +

@@ -83,6 +83,8 @@ data class Article(
         val title: String,
         @ColumnInfo(name = "preContent")
         val preContent: String,
+        @ColumnInfo(name = "articleViewContent")
+        val articleViewContent:String,
         @ColumnInfo(name = "offlineContent")
         val offlineContent: String,
         @ColumnInfo(name = "issueId")
