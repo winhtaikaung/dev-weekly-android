@@ -12,3 +12,11 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun issueDao(): IssueDao
     abstract fun articleDao(): ArticleDao
 }
+
+fun offsetManager(page:Int,limit:Int):Int{
+    var p = page
+    if (p == 0) {
+        p = 1
+    }
+    return (p*limit)-limit
+}

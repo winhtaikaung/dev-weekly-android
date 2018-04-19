@@ -4,6 +4,7 @@ import android.util.Log
 import com.winhtaikaung.devweekly.repository.api.IssueApi
 import com.winhtaikaung.devweekly.repository.data.Issue
 import com.winhtaikaung.devweekly.repository.db.IssueDao
+import com.winhtaikaung.devweekly.repository.db.offsetManager
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
@@ -46,7 +47,7 @@ class IssueRepository(val issueApi: IssueApi, val issueDao: IssueDao) {
     }
 
     fun getIssueListFromDB(limit: Int, page: Int, sourceId: String): Observable<List<Issue>> {
-        return issueDao.getIssues(limit, page, sourceId).filter { it.isNotEmpty() }
+        return issueDao.getIssues(limit, offsetManager(page,limit), sourceId).filter { it.isNotEmpty() }
                 .toObservable()
                 .doOnNext {
                     Log.e("DAO", "Dispatching ${it.size} issues from DB...")
