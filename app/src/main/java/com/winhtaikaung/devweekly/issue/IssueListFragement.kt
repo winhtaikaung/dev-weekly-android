@@ -21,7 +21,8 @@ import timber.log.Timber
 
 private const val SOURCE_ID = "param1"
 
-open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener {
+open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener,EndlessRecyclerViewAdapter.RequestToLoadMoreListener {
+
 
     val issueListViewModel = App.injectIssueListViewModel()
 
@@ -67,25 +68,24 @@ open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener 
         rvIssueList = view.findViewById(R.id.rvIssueList)
         issueListAdapter = IssueListAdapter()
         issueListAdapter?.setOnItemClickListener(this)
-        rvIssueList.layoutManager = LinearLayoutManager(this?.activity)
 
-        loadIssues(mPageCounter, limit)
-        onIssueloaded()
+        var layoutManager:LinearLayoutManager = LinearLayoutManager(this?.activity)
+        layoutManager.orientation=LinearLayoutManager.VERTICAL
+        rvIssueList.layoutManager = layoutManager
+
+        mEndlessRecyclerViewAdapter = EndlessRecyclerViewAdapter(this.activity!!, issueListAdapter,this)
+        rvIssueList.setAdapter(mEndlessRecyclerViewAdapter);
+
         return view
     }
 
-    fun onIssueloaded() {
-        mEndlessRecyclerViewAdapter = EndlessRecyclerViewAdapter(this.activity!!, issueListAdapter,
-                object : EndlessRecyclerViewAdapter.RequestToLoadMoreListener {
-                    override fun onLoadMoreRequested() {
-                        if (mPageCounter == 1) {
-                            loadIssues(1, limit);
-                        } else {
-                            loadIssues(mPageCounter, limit);
-                        }
-                    }
-                })
-        rvIssueList.setAdapter(mEndlessRecyclerViewAdapter);
+
+    override fun onLoadMoreRequested() {
+        if (mPageCounter == 1) {
+            loadIssues(1, limit);
+        } else {
+            loadIssues(mPageCounter, limit);
+        }
     }
 
     fun loadIssues(page: Int, limit: Int) {
@@ -100,17 +100,15 @@ open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener 
                         }else{
                             mIssueList.addAll(it.issues as MutableList<Issue>)
                         }
-                        issueListAdapter.setmIssueList(it.issues)
+                        issueListAdapter.setmIssueList(mIssueList)
                         mEndlessRecyclerViewAdapter.onDataReady(true)
                         mPageCounter++
                     } else {
-                        mEndlessRecyclerViewAdapter.onDataReady(false);
+                        mEndlessRecyclerViewAdapter.onDataReady(false)
                     }
-
-
                 }, {
                     Timber.w(it)
-                    mEndlessRecyclerViewAdapter.onDataReady(false);
+//                    mEndlessRecyclerViewAdapter.onDataReady(false);
                 }))
     }
 

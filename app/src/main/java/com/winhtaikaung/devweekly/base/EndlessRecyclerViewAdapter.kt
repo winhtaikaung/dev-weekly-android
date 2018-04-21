@@ -2,15 +2,21 @@ package com.winhtaikaung.devweekly.base
 
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.support.annotation.LayoutRes
-import android.support.v7.widget.RecyclerView.Adapter
-import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+
+
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.winhtaikaung.devweekly.R
+
 import java.util.concurrent.atomic.AtomicBoolean
+
+import android.support.v7.widget.RecyclerView.Adapter
+import android.support.v7.widget.RecyclerView.ViewHolder
 
 /**
  * @author rockerhieu on 7/6/15.
@@ -75,9 +81,11 @@ class EndlessRecyclerViewAdapter @JvmOverloads constructor(private val context: 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (getItemViewType(position) == TYPE_PENDING && !dataPending.get()) {
-            dataPending.set(true)
-            requestToLoadMoreListener.onLoadMoreRequested()
+        if (getItemViewType(position) == TYPE_PENDING) {
+            if (!dataPending.get()) {
+                dataPending.set(true)
+                requestToLoadMoreListener.onLoadMoreRequested()
+            }
         } else {
             super.onBindViewHolder(holder, position)
         }
@@ -93,9 +101,8 @@ class EndlessRecyclerViewAdapter @JvmOverloads constructor(private val context: 
     internal inner class PendingViewHolder(itemView: View) : ViewHolder(itemView) {
 
         init {
-            (itemView as ProgressBar).progressDrawable = context.resources.getDrawable(R.drawable.progress_drawable)
-            //                    .setColorFilter(context.getResources().getColor(R.color.colorPrimary),
-            //                            PorterDuff.Mode.SRC_ATOP);
+            val shimmerLayout = itemView.findViewById<ShimmerFrameLayout>(R.id.shimmer_view_container)
+            shimmerLayout.startShimmer()
         }
     }
 

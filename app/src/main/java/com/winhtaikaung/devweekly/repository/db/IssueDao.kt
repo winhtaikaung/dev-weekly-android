@@ -9,7 +9,7 @@ import io.reactivex.Single
 
 @Dao
 interface IssueDao {
-    @Query("SELECT * FROM issues WHERE sourceId = (:sourceId) limit (:limit) offset (:offset)")
+    @Query("SELECT * FROM issues WHERE sourceId = (:sourceId) ORDER BY issueNumber DESC limit (:limit) offset (:offset)")
     fun getIssues(limit: Int, offset: Int, sourceId: String): Single<List<Issue>>
 
     @Query("SELECT * FROM issues WHERE objectId = (:issueId)")

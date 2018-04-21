@@ -75,7 +75,6 @@ public class RecyclerViewAdapterWrapper extends Adapter {
     @Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         if (holder instanceof EndlessRecyclerViewAdapter.PendingViewHolder) {
-            Log.e("PENDING_VIEW_HOLDER", "TRUE");
         } else {
             wrapped.onViewRecycled(holder);
         }
