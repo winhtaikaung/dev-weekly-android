@@ -3,10 +3,7 @@ package com.winhtaikaung.devweekly
 import com.nhaarman.mockito_kotlin.mock
 import com.winhtaikaung.devweekly.repository.ArticleRepository
 import com.winhtaikaung.devweekly.repository.api.ArticleApi
-import com.winhtaikaung.devweekly.repository.data.Article
-import com.winhtaikaung.devweekly.repository.data.ArticleListResponse
-import com.winhtaikaung.devweekly.repository.data.Articles
-import com.winhtaikaung.devweekly.repository.data.Data
+import com.winhtaikaung.devweekly.repository.data.*
 import com.winhtaikaung.devweekly.repository.db.ArticleDao
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -64,4 +61,5 @@ class ArticleRepositoryTest {
                 .assertValue { it.isEmpty() }
 
     }
+
 }

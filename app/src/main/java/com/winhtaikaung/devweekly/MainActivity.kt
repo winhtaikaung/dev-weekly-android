@@ -1,9 +1,13 @@
 package com.winhtaikaung.devweekly
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.FrameLayout
@@ -20,12 +24,15 @@ class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedList
 
 
     private var mDrawerLayout: DrawerLayout? = null
+    private var mDrawerToggle: ActionBarDrawerToggle? = null
     private var mNavigationView: NavigationView? = null
+    lateinit var manager: FragmentManager
+    lateinit var transaction: FragmentTransaction
     private var mContainer: FrameLayout? = null
     private var mToolbar: Toolbar? = null
     private var sourceListViewModel = App.injectSourceListViewModel()
     private var tmpImageView: ImageView? = null
-    private var menuList:TreeMap<String,String>? = TreeMap<String,String>()
+    private var menuList: TreeMap<String, String>? = TreeMap<String, String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +47,11 @@ class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedList
 
         val actionbar = supportActionBar
         actionbar?.setDisplayHomeAsUpEnabled(true)
-        actionbar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+        mDrawerToggle = ActionBarDrawerToggle(this, mDrawerLayout, R.string.open_drawer, R.string.close_drawer)
+        this.mDrawerLayout!!.setDrawerListener(mDrawerToggle)
 
+        manager = supportFragmentManager
+        transaction = manager.beginTransaction()
         subscribe(sourceListViewModel.getSources(10, 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -49,17 +59,30 @@ class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedList
                     var i = 0
                     it.sources.map {
 
-                        mNavigationView?.menu?.add(0, i,i , it.name)
-                        menuList!!.put(it.name,it.objectId)
+                        mNavigationView?.menu?.add(0, i, i, it.name)
+                        menuList!!.put(it.name, it.objectId)
                         i++
                         //TODO set icon dynamicaly or from assets
                     }
                     i = 0
+                    mToolbar?.title = menuList!!.firstKey()
+                    transaction.replace(R.id.content_frame, IssueListFragement.newInstance(menuList!!.getValue(menuList!!.firstKey()))) // newInstance() is a static factory method.
+                    transaction.commit()
                 }, {
                     Timber.w(it)
                 }))
 
 
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        mDrawerToggle!!.syncState()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        mDrawerToggle!!.onConfigurationChanged(newConfig)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -73,11 +96,11 @@ class MainActivity : MvvmActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val manager = supportFragmentManager
-        val transaction = manager?.beginTransaction()
-        mToolbar?.title = item?.title
-        transaction?.replace(R.id.content_frame, IssueListFragement.newInstance(menuList?.get(item.title).toString())) // newInstance() is a static factory method.
-        transaction?.commit()
+        manager = supportFragmentManager
+        transaction = manager.beginTransaction()
+        mToolbar?.title = item.title
+        transaction.replace(R.id.content_frame, IssueListFragement.newInstance(menuList?.get(item.title).toString())) // newInstance() is a static factory method.
+        transaction.commit()
         item.isChecked = true
         // close drawer when item is tapped
         mDrawerLayout?.closeDrawers()

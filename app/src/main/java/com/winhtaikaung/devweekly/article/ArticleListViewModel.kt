@@ -16,4 +16,6 @@ class ArticleListViewModel(val articleRepository: ArticleRepository) {
                     ArticleList(emptyList(), "An error occured", it)
                 }
     }
+
+
 }

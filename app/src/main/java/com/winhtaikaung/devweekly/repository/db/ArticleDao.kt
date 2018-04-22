@@ -13,7 +13,7 @@ interface ArticleDao {
     fun getArticles(limit: Int, offset: Int, issueId: String): Single<List<Article>>
 
     @Query("SELECT * FROM articles WHERE objectId = (:articleId)")
-    fun getArticle(articleId: String): Single<Article>
+    fun getArticle(articleId: String): Single<List<Article>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertArticle(article: Article)

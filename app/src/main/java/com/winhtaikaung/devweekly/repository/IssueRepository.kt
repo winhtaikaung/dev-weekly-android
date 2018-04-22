@@ -47,7 +47,7 @@ class IssueRepository(val issueApi: IssueApi, val issueDao: IssueDao) {
     }
 
     fun getIssueListFromDB(limit: Int, page: Int, sourceId: String): Observable<List<Issue>> {
-        return issueDao.getIssues(limit, offsetManager(page,limit), sourceId).filter { it.isNotEmpty() }
+        return issueDao.getIssues(limit, offsetManager(page, limit), sourceId).filter { it.isNotEmpty() }
                 .toObservable()
                 .doOnNext {
                     Log.e("DAO", "Dispatching ${it.size} issues from DB...")

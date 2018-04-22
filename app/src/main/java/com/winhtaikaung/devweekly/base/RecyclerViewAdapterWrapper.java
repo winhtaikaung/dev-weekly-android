@@ -2,7 +2,6 @@ package com.winhtaikaung.devweekly.base;
 
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import static android.support.v7.widget.RecyclerView.Adapter;

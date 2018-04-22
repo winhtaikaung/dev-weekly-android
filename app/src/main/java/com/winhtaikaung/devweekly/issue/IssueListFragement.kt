@@ -1,5 +1,7 @@
 package com.winhtaikaung.devweekly.issue
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -8,9 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Toast
 import com.winhtaikaung.devweekly.App
 import com.winhtaikaung.devweekly.R
+import com.winhtaikaung.devweekly.article.ArticleListActivity
+import com.winhtaikaung.devweekly.base.CommonListAdapter
 import com.winhtaikaung.devweekly.base.EndlessRecyclerViewAdapter
 import com.winhtaikaung.devweekly.base.MvvmFragment
 import com.winhtaikaung.devweekly.repository.data.Issue
@@ -21,7 +24,7 @@ import timber.log.Timber
 
 private const val SOURCE_ID = "param1"
 
-open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener,EndlessRecyclerViewAdapter.RequestToLoadMoreListener {
+open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener, EndlessRecyclerViewAdapter.RequestToLoadMoreListener {
 
 
     val issueListViewModel = App.injectIssueListViewModel()
@@ -32,7 +35,7 @@ open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener,
     lateinit var mIssueList: MutableList<Issue>
     private var mPageCounter: Int = 1
     lateinit var rvIssueList: RecyclerView
-    lateinit var issueListAdapter: IssueListAdapter
+    lateinit var commonListAdapter: CommonListAdapter
     private lateinit var mEndlessRecyclerViewAdapter: EndlessRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,15 +69,15 @@ open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener,
 
         val view = inflater.inflate(R.layout.fragment_container_list, container, false)
         rvIssueList = view.findViewById(R.id.rvIssueList)
-        issueListAdapter = IssueListAdapter()
-        issueListAdapter?.setOnItemClickListener(this)
+        commonListAdapter = CommonListAdapter()
+        commonListAdapter.setOnItemClickListener(this)
 
-        var layoutManager:LinearLayoutManager = LinearLayoutManager(this?.activity)
-        layoutManager.orientation=LinearLayoutManager.VERTICAL
+        var layoutManager: LinearLayoutManager = LinearLayoutManager(this.activity)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
         rvIssueList.layoutManager = layoutManager
 
-        mEndlessRecyclerViewAdapter = EndlessRecyclerViewAdapter(this.activity!!, issueListAdapter,this)
-        rvIssueList.setAdapter(mEndlessRecyclerViewAdapter);
+        mEndlessRecyclerViewAdapter = EndlessRecyclerViewAdapter(this.activity!!, commonListAdapter, this)
+        rvIssueList.adapter = mEndlessRecyclerViewAdapter
 
         return view
     }
@@ -82,9 +85,9 @@ open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener,
 
     override fun onLoadMoreRequested() {
         if (mPageCounter == 1) {
-            loadIssues(1, limit);
+            loadIssues(1, limit)
         } else {
-            loadIssues(mPageCounter, limit);
+            loadIssues(mPageCounter, limit)
         }
     }
 
@@ -95,12 +98,12 @@ open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener,
                 .subscribe({
                     Log.e("ISSUE_SIZE", "ISSUE LIST${it.issues.size}")
                     if (it.issues.size > 0) {
-                        if(mPageCounter == 1){
+                        if (mPageCounter == 1) {
                             mIssueList = it.issues as MutableList<Issue>
-                        }else{
+                        } else {
                             mIssueList.addAll(it.issues as MutableList<Issue>)
                         }
-                        issueListAdapter.setmIssueList(mIssueList)
+                        commonListAdapter.setmIssueList(mIssueList)
                         mEndlessRecyclerViewAdapter.onDataReady(true)
                         mPageCounter++
                     } else {
@@ -113,7 +116,14 @@ open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener,
     }
 
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        Toast.makeText(this.context,"LMAO",Toast.LENGTH_LONG).show()
+
+
+        val i: Intent = Intent(this.context, ArticleListActivity::class.java)
+        i.data = Uri.parse(this.resources.getString(R.string.article_list_url_pattern) + "issue_id=" + mIssueList[p2].objectId + "&&issue_number=" + mIssueList[p2].issueNumber)
+
+        this.context!!.startActivity(i)
+
+
     }
 
 

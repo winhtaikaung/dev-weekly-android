@@ -2,21 +2,15 @@ package com.winhtaikaung.devweekly.base
 
 
 import android.content.Context
-import android.graphics.PorterDuff
 import android.support.annotation.LayoutRes
+import android.support.v7.widget.RecyclerView.Adapter
+import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-
-
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.winhtaikaung.devweekly.R
-
 import java.util.concurrent.atomic.AtomicBoolean
-
-import android.support.v7.widget.RecyclerView.Adapter
-import android.support.v7.widget.RecyclerView.ViewHolder
 
 /**
  * @author rockerhieu on 7/6/15.

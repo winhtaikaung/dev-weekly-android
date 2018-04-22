@@ -2,6 +2,7 @@ package com.winhtaikaung.devweekly
 
 import android.app.Application
 import android.arch.persistence.room.Room
+import com.winhtaikaung.devweekly.article.ArticleDetailViewModel
 import com.winhtaikaung.devweekly.article.ArticleListViewModel
 import com.winhtaikaung.devweekly.issue.IssueListViewModel
 import com.winhtaikaung.devweekly.repository.ArticleRepository
@@ -30,6 +31,8 @@ class App : Application() {
         private lateinit var sourceListviewModel: SourceListViewModel
         private lateinit var articleListviewModel: ArticleListViewModel
 
+        private lateinit var articleDetailViewModel: ArticleDetailViewModel
+
         private lateinit var appDatabase: AppDatabase
         private lateinit var issueRepository: IssueRepository
         private lateinit var sourceRepository: SourceRepository
@@ -49,6 +52,8 @@ class App : Application() {
         fun injectArticleApi() = articleApi
         fun injectArticleListViewModel() = articleListviewModel
         fun injectArticleDao() = appDatabase.articleDao()
+
+        fun injectArticleDetailViewModel() = articleDetailViewModel
     }
 
     private var disposable: Disposable? = null
@@ -64,7 +69,7 @@ class App : Application() {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://192.168.1.103:5000/")
+                .baseUrl("http://192.168.0.108:5000/")
                 .build()
 
         sourceApi = retrofit.create(SourceApi::class.java)
@@ -81,6 +86,8 @@ class App : Application() {
 
         articleRepository = ArticleRepository(articleApi, appDatabase.articleDao())
         articleListviewModel = ArticleListViewModel(articleRepository)
+
+        articleDetailViewModel = ArticleDetailViewModel(articleRepository)
 
 
     }

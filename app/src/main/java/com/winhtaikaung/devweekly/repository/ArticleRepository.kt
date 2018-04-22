@@ -4,6 +4,7 @@ import android.util.Log
 import com.winhtaikaung.devweekly.repository.api.ArticleApi
 import com.winhtaikaung.devweekly.repository.data.Article
 import com.winhtaikaung.devweekly.repository.db.ArticleDao
+import com.winhtaikaung.devweekly.repository.db.offsetManager
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
@@ -51,7 +52,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
     }
 
     fun getArticleListFromDB(limit: Int, page: Int, issueId: String): Observable<List<Article>> {
-        return articleDao.getArticles(limit, page, issueId).filter { it.isNotEmpty() }
+        return articleDao.getArticles(limit, offsetManager(page, limit), issueId).filter { it.isNotEmpty() }
                 .toObservable()
                 .doOnNext {
                     Log.e("DAO", "Dispatching ${it.size} articles from DB...")
@@ -60,11 +61,11 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
     }
 
 
-    fun getArticle(articleId: String): Observable<Article> {
-        return Observable.concat(getArticleFromDB(articleId), getArticleFromApi(articleId))
+    fun getArticle(articleId: String): Observable<List<Article>> {
+        return Observable.concatArray(getArticleFromApi(articleId), getArticleFromDB(articleId))
     }
 
-    fun getArticleFromApi(articleId: String): Observable<Article> {
+    fun getArticleFromApi(articleId: String): Observable<List<Article>> {
         val graphql = "{\n" +
                 "  article(articleId:\"" + articleId + "\"){\n" +
                 "    id\n" +
@@ -83,15 +84,18 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
                 "}"
         return articleApi.getArticle(graphql).flatMap { (data) ->
             storeArticleinDB(data.article!!)
-            Observable.just(data.article!!)
-        }
+            val articleList: List<Article> = mutableListOf(data.article!!)
+            Observable.just(articleList)
+        }.onErrorReturn {
+                    emptyList()
+                }
     }
 
-    fun getArticleFromDB(articleId: String): Observable<Article> {
-        return articleDao.getArticle(articleId)
+    fun getArticleFromDB(articleId: String): Observable<List<Article>> {
+        return articleDao.getArticle(articleId).filter { it.isNotEmpty() }
                 .toObservable()
                 .doOnNext {
-                    //                    Log.e("DAO", "Dispatching ${it.toString()} article from DB")
+                    Log.e("DAO", "Dispatching ${it.size} article from DB")
                 }
     }
 
@@ -100,7 +104,7 @@ class ArticleRepository(val articleApi: ArticleApi, val articleDao: ArticleDao) 
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    //                    Log.e("DAO", "Saving ${article.toString()} into DB")
+                    Log.e("DAO", "Saving ${article.toString()} into DB")
                 }
     }
 
