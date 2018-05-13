@@ -82,15 +82,15 @@ class ArticleDetailActivity : MvvmActivity() {
 
     override fun onStart() {
         super.onStart()
-        subscribe(articleDetailViewModel.getArticle(articleId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    Log.e("DETAIL", "${it.articleDetail[0]}")
-                    actionBar.title = it.articleDetail[0].title
-                    html = it.articleDetail[0].articleViewContent!!
-                    articleWebView?.loadData(headerStr + html + footerStr, "text/html; charset=utf-8", "UTF-8")
-                }))
+//        subscribe(articleDetailViewModel.getArticle(articleId)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({
+//                    Log.e("DETAIL", "${it.articleDetail[0]}")
+//                    actionBar.title = it.articleDetail[0].title
+//                    html = it.articleDetail[0].articleViewContent!!
+//                    articleWebView?.loadData(headerStr + html + footerStr, "text/html; charset=utf-8", "UTF-8")
+//                }))
     }
 
 }

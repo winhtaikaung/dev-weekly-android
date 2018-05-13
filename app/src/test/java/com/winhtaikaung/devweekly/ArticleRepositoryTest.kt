@@ -39,27 +39,6 @@ class ArticleRepositoryTest {
             "  }\n" +
             "}\n"
 
-    @Before
-    fun setup() {
-        articleApi = mock()
-        articleDao = mock()
-        `when`(articleDao.getArticles(1, 1, "61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF"))
-                .thenReturn(Single.just(emptyList()))
-        articleRepository = ArticleRepository(articleApi, articleDao)
 
-
-    }
-
-    @Test
-    fun test_emptyCache_OnArticleListApi_resutEmptyList() {
-        `when`(articleApi.getArticleList(articleListGraphql)).thenReturn(Observable.just(ArticleListResponse(
-                data = Data(source = null, sources = null, article = null,
-                        articles = Articles(meta = null, data = emptyList<Article>()),
-                        issue = null, issues = null)
-        )))
-        articleRepository.getArticleList(1, 1, "61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF").test()
-                .assertValue { it.isEmpty() }
-
-    }
 
 }

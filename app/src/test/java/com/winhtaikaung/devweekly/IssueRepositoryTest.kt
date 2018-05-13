@@ -38,25 +38,5 @@ class IssueRepositoryTest {
             "  }\n" +
             "}\n"
 
-    @Before
-    fun setup() {
-        issueApi = mock()
-        issueDao = mock()
-        `when`(issueDao.getIssues(1, 1, "61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF"))
-                .thenReturn(Single.just(emptyList()))
-        issueRepository = IssueRepository(issueApi, issueDao)
 
-    }
-
-    @Test
-    fun test_emptyCache_OnIssueListApi_resutEmptyList() {
-        `when`(issueApi.getIssueList(issueListGraphql)).thenReturn(Observable.just(IssueListResponse(
-                data = Data(source = null, sources = null, article = null,
-                        articles = null,
-                        issue = null, issues = Issues(meta = null, data = emptyList<Issue>()))
-        )))
-        issueRepository.getIssueList(1, 1, "61F1CF54-B775-4EAD-A56E-F8F7F65CEDAF").test()
-                .assertValue { it.isEmpty() }
-
-    }
 }

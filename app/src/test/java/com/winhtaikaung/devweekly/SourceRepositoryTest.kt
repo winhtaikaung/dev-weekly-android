@@ -39,26 +39,5 @@ class SourceRepositoryTest {
             "  }\n" +
             "}\n"
 
-    @Before
-    fun setup() {
-        sourceApi = mock()
-        sourceDao = mock()
-        `when`(sourceDao.getSources(1, 1))
-                .thenReturn(Single.just(emptyList()))
-        sourceRepository = SourceRepository(sourceApi, sourceDao)
 
-
-    }
-
-    @Test
-    fun test_emptyCache_OnSourceListApi_resutEmptyList() {
-
-        `when`(sourceApi.getSourceList(graphql)).thenReturn(Observable.just(SourceListResponse(
-                data = Data(source = null, sources = Sources(meta = null, data = emptyList<Source>()), article = null,
-                        articles = null,
-                        issue = null, issues = null)
-        )))
-        sourceRepository.getSourceList(1, 1).test()
-                .assertValue { it.isEmpty() }
-    }
 }

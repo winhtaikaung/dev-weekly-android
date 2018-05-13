@@ -97,27 +97,27 @@ open class ArticleListFragment : MvvmFragment(), EndlessRecyclerViewAdapter.Requ
 
 
     fun loadIssues(page: Int, limit: Int) {
-        subscribe(articleListViewModel.getArticles(limit, page, issueId!!)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    Log.e("ISSUE_SIZE", "ISSUE LIST${it.articles.size}")
-                    if (it.articles.size > 0) {
-                        if (mPageCounter == 1) {
-                            mArticleList = it.articles as MutableList<Article>
-                        } else {
-                            mArticleList.addAll(it.articles as MutableList<Article>)
-                        }
-                        commonListAdapter.setmIssueList(mArticleList)
-                        mEndlessRecyclerViewAdapter.onDataReady(true)
-                        mPageCounter++
-                    } else {
-                        mEndlessRecyclerViewAdapter.onDataReady(false)
-                    }
-                }, {
-                    Timber.w(it)
-                    mEndlessRecyclerViewAdapter.onDataReady(false);
-                }))
+//        subscribe(articleListViewModel.getArticles(limit, page, issueId!!)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({
+//                    Log.e("ISSUE_SIZE", "ISSUE LIST${it.articles.size}")
+//                    if (it.articles.size > 0) {
+//                        if (mPageCounter == 1) {
+//                            mArticleList = it.articles as MutableList<Article>
+//                        } else {
+//                            mArticleList.addAll(it.articles as MutableList<Article>)
+//                        }
+//                        commonListAdapter.setmIssueList(mArticleList)
+//                        mEndlessRecyclerViewAdapter.onDataReady(true)
+//                        mPageCounter++
+//                    } else {
+//                        mEndlessRecyclerViewAdapter.onDataReady(false)
+//                    }
+//                }, {
+//                    Timber.w(it)
+//                    mEndlessRecyclerViewAdapter.onDataReady(false);
+//                }))
     }
 
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

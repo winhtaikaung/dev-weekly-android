@@ -27,7 +27,6 @@ private const val SOURCE_ID = "param1"
 open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener, EndlessRecyclerViewAdapter.RequestToLoadMoreListener {
 
 
-    val issueListViewModel = App.injectIssueListViewModel()
 
 
     private var sourceId: String? = null
@@ -92,27 +91,27 @@ open class IssueListFragement : MvvmFragment(), AdapterView.OnItemClickListener,
     }
 
     fun loadIssues(page: Int, limit: Int) {
-        subscribe(issueListViewModel.getIssues(limit, page, sourceId!!)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    Log.e("ISSUE_SIZE", "ISSUE LIST${it.issues.size}")
-                    if (it.issues.size > 0) {
-                        if (mPageCounter == 1) {
-                            mIssueList = it.issues as MutableList<Issue>
-                        } else {
-                            mIssueList.addAll(it.issues as MutableList<Issue>)
-                        }
-                        commonListAdapter.setmIssueList(mIssueList)
-                        mEndlessRecyclerViewAdapter.onDataReady(true)
-                        mPageCounter++
-                    } else {
-                        mEndlessRecyclerViewAdapter.onDataReady(false)
-                    }
-                }, {
-                    Timber.w(it)
-//                    mEndlessRecyclerViewAdapter.onDataReady(false);
-                }))
+//        subscribe(issueListViewModel.getIssues(limit, page, sourceId!!)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({
+//                    Log.e("ISSUE_SIZE", "ISSUE LIST${it.issues.size}")
+//                    if (it.issues.size > 0) {
+//                        if (mPageCounter == 1) {
+//                            mIssueList = it.issues as MutableList<Issue>
+//                        } else {
+//                            mIssueList.addAll(it.issues as MutableList<Issue>)
+//                        }
+//                        commonListAdapter.setmIssueList(mIssueList)
+//                        mEndlessRecyclerViewAdapter.onDataReady(true)
+//                        mPageCounter++
+//                    } else {
+//                        mEndlessRecyclerViewAdapter.onDataReady(false)
+//                    }
+//                }, {
+//                    Timber.w(it)
+////                    mEndlessRecyclerViewAdapter.onDataReady(false);
+//                }))
     }
 
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

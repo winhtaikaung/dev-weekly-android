@@ -39,21 +39,7 @@ class App : Application() {
         private lateinit var articleRepository: ArticleRepository
 
 
-        fun injectIssueApi() = issueApi
-        fun injectIssueListViewModel() = issueListViewModel
-        fun injectIssueDao() = appDatabase.issueDao()
 
-
-        fun injectSourceApi() = sourceApi
-        fun injectSourceListViewModel() = sourceListviewModel
-        fun injectSourceDao() = appDatabase.sourceDao()
-
-
-        fun injectArticleApi() = articleApi
-        fun injectArticleListViewModel() = articleListviewModel
-        fun injectArticleDao() = appDatabase.articleDao()
-
-        fun injectArticleDetailViewModel() = articleDetailViewModel
     }
 
     private var disposable: Disposable? = null
