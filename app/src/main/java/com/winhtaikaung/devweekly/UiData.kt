@@ -1,4 +1,4 @@
-package com.winhtaikaung.devweekly.viewmodel.data
+package com.winhtaikaung.devweekly
 
 import com.winhtaikaung.devweekly.repository.data.Article
 import com.winhtaikaung.devweekly.repository.data.Issue

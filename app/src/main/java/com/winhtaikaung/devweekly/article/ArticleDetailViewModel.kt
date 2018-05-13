@@ -1,7 +1,7 @@
 package com.winhtaikaung.devweekly.article
 
 import com.winhtaikaung.devweekly.repository.ArticleRepository
-import com.winhtaikaung.devweekly.viewmodel.data.ArticleDetail
+import com.winhtaikaung.devweekly.ArticleDetail
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
 
