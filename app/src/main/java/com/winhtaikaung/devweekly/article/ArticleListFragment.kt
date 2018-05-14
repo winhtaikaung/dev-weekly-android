@@ -3,6 +3,7 @@ package com.winhtaikaung.devweekly.article
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -24,9 +25,8 @@ private const val ISSUE_ID = "issueId"
 
 private const val ISSUE_NUMBER = "issueNumber"
 
-open class ArticleListFragment : MvvmFragment(), EndlessRecyclerViewAdapter.RequestToLoadMoreListener, AdapterView.OnItemClickListener {
+open class ArticleListFragment :Fragment(),  EndlessRecyclerViewAdapter.RequestToLoadMoreListener, AdapterView.OnItemClickListener {
 
-    val articleListViewModel = App.injectArticleListViewModel()
 
 
     private var issueId: String? = null

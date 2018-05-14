@@ -64,16 +64,7 @@ class App : Application() {
 
         appDatabase = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "dev-weekly-database").build()
 
-        issueRepository = IssueRepository(issueApi, appDatabase.issueDao())
-        issueListViewModel = IssueListViewModel(issueRepository)
 
-        sourceRepository = SourceRepository(sourceApi, appDatabase.sourceDao())
-        sourceListviewModel = SourceListViewModel(sourceRepository)
-
-        articleRepository = ArticleRepository(articleApi, appDatabase.articleDao())
-        articleListviewModel = ArticleListViewModel(articleRepository)
-
-        articleDetailViewModel = ArticleDetailViewModel(articleRepository)
 
 
     }
