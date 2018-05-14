@@ -1,5 +1,7 @@
 package com.winhtaikaung.devweekly.repository.api
 
+import android.arch.lifecycle.LiveData
+import com.winhtaikaung.devweekly.api.ApiResponse
 import com.winhtaikaung.devweekly.repository.data.*
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -26,9 +28,9 @@ interface IssueApi {
 interface ArticleApi {
 
     @GET("api")
-    fun getArticle(@Query("query") graphqlQuery: String): Observable<ArticleResponse>
+    fun getArticle(@Query("query") graphqlQuery: String): LiveData<ApiResponse<ArticleResponse>>
 
     @GET("api")
-    fun getArticleList(@Query("query") graphqlQuery: String): Observable<ArticleListResponse>
+    fun getArticleList(@Query("query") graphqlQuery: String): LiveData<ApiResponse<ArticleListResponse>>
 
 }

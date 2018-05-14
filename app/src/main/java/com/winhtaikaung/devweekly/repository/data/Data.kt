@@ -37,22 +37,22 @@ data class Sources(
 
 data class Articles(
         val meta: Meta?,
-        val data: List<Article>?
+        val data: List<Article>
 )
 
 
 data class Issues(
         val meta: Meta?,
-        val data: List<Issue>?
+        val data: List<Issue>
 )
 
 data class Data(
-        val source: Source?,
-        val issue: Issue?,
-        val article: Article?,
-        val issues: Issues?,
-        val articles: Articles?,
-        val sources: Sources?
+        val source: Source,
+        val issue: Issue,
+        val article: Article,
+        val issues: Issues,
+        val articles: Articles,
+        val sources: Sources
 )
 
 
