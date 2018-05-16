@@ -28,7 +28,9 @@ class ArticleRepository @Inject constructor(private val appExecutor: AppExecutor
                 return LivePagedListBuilder(articleDao.getArticles(issuId), 20).build()
             }
 
-            override fun shouldFetch(data: PagedList<Article>?): Boolean = data == null || data.isEmpty()
+            override fun shouldFetch(data: PagedList<Article>?):Boolean{
+                return data == null || data.isEmpty()
+            }
 
             override fun saveCallResult(item: ArticleListResponse) {
                 articleDao.insertBulkArticle(item.data.articles.data)
