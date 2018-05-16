@@ -46,8 +46,8 @@ object TestUtil {
 
 }
 
-internal class ItemDataSource(articleList: List<Article>) : PositionalDataSource<Article>() {
-    var timetableDays: List<Article> = articleList
+internal class ItemDataSource<T>(articleList: List<T>) : PositionalDataSource<T>() {
+    var timetableDays: List<T> = articleList
 
 
     private fun computeCount(): Int {
@@ -55,13 +55,13 @@ internal class ItemDataSource(articleList: List<Article>) : PositionalDataSource
         return timetableDays.size
     }
 
-    private fun loadRangeInternal(startPosition: Int, loadCount: Int): List<Article> {
+    private fun loadRangeInternal(startPosition: Int, loadCount: Int): List<T> {
         // actual load code here
         return this.timetableDays
     }
 
     override fun loadInitial(@NonNull params: PositionalDataSource.LoadInitialParams,
-                             @NonNull callback: PositionalDataSource.LoadInitialCallback<Article>) {
+                             @NonNull callback: PositionalDataSource.LoadInitialCallback<T>) {
         val totalCount = computeCount()
         val position = computeInitialLoadPosition(params, totalCount)
         val loadSize = computeInitialLoadSize(params, position, totalCount)
@@ -69,7 +69,7 @@ internal class ItemDataSource(articleList: List<Article>) : PositionalDataSource
     }
 
     override fun loadRange(@NonNull params: LoadRangeParams,
-                           @NonNull callback: LoadRangeCallback<Article>) {
+                           @NonNull callback: LoadRangeCallback<T>) {
         callback.onResult(loadRangeInternal(params.startPosition, params.loadSize))
     }
 }

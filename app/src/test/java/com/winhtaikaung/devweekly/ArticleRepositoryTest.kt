@@ -5,12 +5,10 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.paging.DataSource
 import android.arch.paging.PagedList
-import android.arch.paging.PositionalDataSource
 import com.winhtaikaung.devweekly.repository.ArticleRepository
 import com.winhtaikaung.devweekly.repository.api.ArticleApi
 import com.winhtaikaung.devweekly.repository.data.*
 import com.winhtaikaung.devweekly.repository.db.ArticleDao
-import com.winhtaikaung.devweekly.repository.db.offsetManager
 import com.winhtaikaung.devweekly.util.InstantAppExecutors
 import com.winhtaikaung.devweekly.util.ItemDataSource
 import com.winhtaikaung.devweekly.util.TestUtil
@@ -94,18 +92,45 @@ class ArticleRepositoryTest {
 
         repo.loadArticleList("123456").observeForever(observer)
         verify(countryService, Mockito.never()).getArticleList(query)
-        val updatedDbData = MutableLiveData<PagedList<Article>>()
+
 
         var emptyMockSource = object : DataSource.Factory<Int, Article>() {
             override fun create(): DataSource<Int, Article>? {
-                return null
+                return  ItemDataSource(emptyList())
             }
 
         }
 
+
         Mockito.`when`(countryDao.getArticles("123456")).thenReturn(emptyMockSource)
-        updatedDbData.value = null
+
+        repo.loadArticleList("123456").observeForever(observer)
         verify(countryService).getArticleList(query)
+    }
+
+    @Test
+    fun loadCountryOffline(){
+        val dbData = MutableLiveData<List<Article>>()
+        val mockCountry1 = TestUtil.createArticle("111", "123456", "9876543210","abc")
+        val mockCountry2 = TestUtil.createArticle("111", "123456", "9876543210","def")
+        val mockCountry3 = TestUtil.createArticle("111", "123456", "9876543210","ghi")
+        val timetableDays: List<Article> = listOf(mockCountry1, mockCountry2, mockCountry3)
+
+        var query = ""
+
+        var mockDataSource = object : DataSource.Factory<Int, Article>() {
+            override fun create(): DataSource<Int, Article> {
+                return ItemDataSource(timetableDays)
+            }
+
+        }
+        dbData.value = timetableDays
+        `when`(countryDao!!.getArticles("123456")).thenReturn(mockDataSource)
+        val observer = mock<Observer<Resource<PagedList<Article>>>>()
+        repo.loadArticleList("123456").observeForever(observer)
+        com.nhaarman.mockito_kotlin.verify(countryService, Mockito.never()).getArticleList(query)
+        var pagedList =  PagedList.Builder(ItemDataSource(timetableDays),20).build()
+        com.nhaarman.mockito_kotlin.verify(observer).onChanged(Resource.success(pagedList))
     }
 
 
